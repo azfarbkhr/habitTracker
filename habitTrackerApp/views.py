@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.db.models import Sum
 from django.utils import timezone
-import datetime
+from datetime import datetime
 
 import random
 from django.shortcuts import get_object_or_404, redirect
@@ -91,7 +91,7 @@ class HomePageView(LoginRequiredMixin, generic.TemplateView):
 
             filled_habit_logs = []
             for date in target.date_range():
-                log_for_date = next((log for log in habit_logs if log['date'] == date), None)
+                log_for_date = next((log for log in habit_logs if log['date'].date() == date.date() ), None)
                 
                 if not log_for_date:
                     log_for_date = {'date': date, 'total_quantity': 0}

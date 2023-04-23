@@ -26,3 +26,6 @@ V 1.3 | Date = 2023-04-23 | Status = Done
 
 V 1.4 | Date = 2023-04-23 | Status = Done
 - Setup home page to show target progress
+
+V 1.5 | Date = 2023-04-23 | Status = Done
+- When joining target date range with habit log, the time part of date is included. This is not desired.
