@@ -1,17 +1,33 @@
 from django import forms
 from .models import Habit, Target, HabitLog
+from django.db.models import ForeignKey
 
-class HabitForm(forms.ModelForm):
+class HbtModelForm(forms.ModelForm):
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+
+class HabitForm(HbtModelForm):
     class Meta:
         model = Habit
         fields = ['name', 'category', 'unit']
 
-class TargetForm(forms.ModelForm):
+class TargetForm(HbtModelForm):
     class Meta:
         model = Target
         fields = ['habit', 'title', 'quantity', 'start_date', 'end_date']
 
-class HabitLogForm(forms.ModelForm):
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['habit'].queryset = Habit.objects.filter(user=user)
+
+
+class HabitLogForm(HbtModelForm):
     class Meta:
         model = HabitLog
         fields = ['habit', 'date', 'quantity']
+
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['habit'].queryset = Habit.objects.filter(user=user)
