@@ -1,0 +1,38 @@
+{% extends "habitTrackerApp/base.html" %}
+
+{% block content %}
+    <h1>Targets</h1>
+    <a href="{% url 'target_create' %}">Create New Target</a>
+
+    <table >
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Target Habit</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Target Quantity</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for target in object_list %}
+                <tr>
+                    <td>{{ target.title}}</td>
+                    <td>{{ target.habit.name }}</td>
+                    <td>{{ target.start_date | date:"Y-m-d" }}</td>
+                    <td>{{ target.end_date | date:"Y-m-d" }}</td>
+                    <td>{{ target.quantity }}</td>
+                    <td>
+                        <a href="{% url 'target_update' target.pk %}">Edit</a> |
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6">No record available.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+{% endblock %}

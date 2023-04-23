@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Habit Tracker</title>
+</head>
+<body>
+    <h1>Habit Tracker</h1>
+    <a href="{% url 'habit_list' %}">Habits</a>
+    <a href="{% url 'target_list' %}">Targets</a>
+    <a href="{% url 'habit_log_list' %}">Habit Log</a>
+    
+    {% for message in messages %}
+    <div class="message {{ message.tags }}">
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% block content %}
+    {% endblock %}
+
+    <style>
+        .message {
+            border: 1px solid;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .message.success {
+            border-color: #4caf50;
+            background-color: #dff0d8;
+            color: #3c763d;
+        }
+    </style>
+</body>
+</html>

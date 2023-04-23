@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
 
@@ -13,6 +14,9 @@ class Habit(models.Model):
 
     def __str__(self):
         return self.name
+    
+    def get_absolute_url(self):
+        return reverse('habit_update', kwargs={'pk': self.pk})
 
 class Target(models.Model):
     habit = models.ForeignKey(Habit, on_delete=models.CASCADE)
@@ -24,6 +28,9 @@ class Target(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def get_absolute_url(self):
+        return reverse('target_update', kwargs={'pk': self.pk})
 
 class HabitLog(models.Model):
     habit = models.ForeignKey(Habit, on_delete=models.CASCADE)
@@ -33,3 +40,6 @@ class HabitLog(models.Model):
 
     def __str__(self):
         return self.habit.name + " " + self.date.strftime("%m/%d/%Y")
+    
+    def get_absolute_url(self):
+        return reverse('habit_log_update', kwargs={'pk': self.pk}) 
