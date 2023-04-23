@@ -1,3 +1,4 @@
 .myEnv
 __pycache__
 db.sqlite3
+habitTracker/local_settings.py

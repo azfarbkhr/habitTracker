@@ -74,26 +74,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'habitTracker.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'azfarTestingPyth$default',
+        'USER': 'azfarTestingPyth',
+        'PASSWORD': '37a%mNd&N+KhKDk',
+        'HOST': 'azfarTestingPython.mysql.pythonanywhere-services.com',
+        'PORT': '3306',
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'your_database_name',
-#         'USER': 'azfarTestingPyth',
-#         'PASSWORD': '10Charizard!@#$',
-#         'HOST': 'azfarTestingPython.mysql.pythonanywhere-services.com',
-#         'PORT': '3306',
-#     }
-# }
 
 
 # Password validation
@@ -142,3 +135,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'  
 LOGOUT_REDIRECT_URL = 'login'  
+
+
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
