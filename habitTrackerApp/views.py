@@ -88,7 +88,9 @@ class HomePageView(LoginRequiredMixin, generic.TemplateView):
             days_count_from_today_to_end = (target.end_date.date() - timezone.localdate()).days + 1            
             cumsum = 0
             target_expected_quantity = target.quantity / days_count_from_start_to_end
-
+            habit_logs_quantity_cumsum = 0
+            target_expected_quantity_cumsum = 0
+            
             filled_habit_logs = []
             for date in target.date_range():
                 log_for_date = next((log for log in habit_logs if log['date'].date() == date.date() ), None)
@@ -96,10 +98,11 @@ class HomePageView(LoginRequiredMixin, generic.TemplateView):
                 if not log_for_date:
                     log_for_date = {'date': date, 'total_quantity': 0}
                 
-                cumsum += log_for_date['total_quantity']
+                habit_logs_quantity_cumsum += log_for_date['total_quantity']
+                target_expected_quantity_cumsum += target_expected_quantity
 
-                log_for_date['habit_logs_quantity_cumsum'] = cumsum
-                log_for_date['target_expected_quantity_cumsum'] = round(target_expected_quantity * (date - target.start_date).days, 0)
+                log_for_date['habit_logs_quantity_cumsum'] = habit_logs_quantity_cumsum
+                log_for_date['target_expected_quantity_cumsum'] = target_expected_quantity_cumsum
 
                 filled_habit_logs.append(log_for_date)
 

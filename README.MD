@@ -32,3 +32,6 @@ V 1.5 | Date = 2023-04-23 | Status = Done
 
 V 1.6 | Date = 2023-04-23 | Status = Done
 - production deployment related changes
+
+V 1.7 | Date = 2023-04-23 | Status = Done
+- The target expected count is not correct. It shows 0 on first date of target range.
