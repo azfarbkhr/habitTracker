@@ -2,6 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth.models import User
+import datetime
 
 class Habit(models.Model):
     name = models.CharField(max_length=100)
@@ -31,6 +32,9 @@ class Target(models.Model):
     
     def get_absolute_url(self):
         return reverse('target_update', kwargs={'pk': self.pk})
+    
+    def date_range(self):
+        return [self.start_date + datetime.timedelta(days=i) for i in range((self.end_date - self.start_date).days + 1)]
 
 class HabitLog(models.Model):
     habit = models.ForeignKey(Habit, on_delete=models.CASCADE)

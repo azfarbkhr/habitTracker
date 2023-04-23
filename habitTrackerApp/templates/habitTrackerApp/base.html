@@ -5,13 +5,12 @@
     <title>Habit Tracker</title>
 </head>
 <body>
-    <h1>Habit Tracker</h1>
-
     {% if user.is_authenticated %}
         <ul>
+
             <li>
-                <a href="">
-                    Home
+                <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                    Habit Tracker
                 </a>
             </li>
             <li>

@@ -23,3 +23,6 @@ V 1.3 | Date = 2023-04-23 | Status = Done
 - Setup user registration
 - Setup object permissions
 - Fixed the nav bar
+
+V 1.4 | Date = 2023-04-23 | Status = Done
+- Setup home page to show target progress

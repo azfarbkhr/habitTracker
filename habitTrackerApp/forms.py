@@ -31,3 +31,15 @@ class HabitLogForm(HbtModelForm):
         super().__init__(*args, **kwargs)
         if user:
             self.fields['habit'].queryset = Habit.objects.filter(user=user)
+
+class TargetSelectionForm(forms.Form):
+    target = forms.ModelChoiceField(
+        queryset=Target.objects.none(),
+        label='Select Target',
+        required=True
+    )
+
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['target'].queryset = Target.objects.filter(user=user)
