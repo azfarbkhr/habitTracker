@@ -1,60 +1,78 @@
 {% extends "habitTrackerApp/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
 
 {% block content %}
-  <div class="container">
-    <h1>Home</h1>
-    
-    <form method="get">
-      {{ target_form.as_p }}
-      <button type="submit">Show Habit Logs</button>
-    </form>
 
-    {% if target %}
-      <h2>Habit Logs for "{{ target.title }}"</h2>
-      <style>
-        .target-info {
-          display: flex;
-          flex-wrap: wrap;
-        }
-        
-        .target-info div {
-          flex: 0 0 calc(50% - 10px);
-          margin-bottom: 5px;
-        }
-      </style>
-      
-      <div class="target-info">
-        <div><strong>Target Start Date:</strong> {{ target.start_date | date:"d-M-Y" }}</div>
-        <div><strong>Target End Date:</strong> {{ target.end_date | date:"d-M-Y" }}</div>
-        <div><strong>Target Quantity:</strong> {{ target_quantity }}</div>
-        <div><strong>Current Rate:</strong> {{ current_rate }}</div>
-        <div><strong>Required Rate:</strong> {{ required_rate }}</div>
-        <div><strong>Target Achieved Percentage:</strong> {{ target_achieved_percent }}%</div>
+    <div class="card shadow mb-4">
+    <form method="get" >
+      <div class="input-group">
+          <div class="input-group-prepend">
+            <label for="id_target" class="input-group-text">Select Target</label>
+          </div>          
+          <select name="target" required="" id="id_target" class="custom-select" aria-label="Example select with button addon">
+            {% for choice in target_choices %}
+              <option value="{{ choice.0 }}" {% if choice.0 == target.id %} selected {% endif %}>{{ choice.1 }}</option>
+            {% endfor %}
+          </select>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="submit">Show</button>
+          </div>
       </div>
-      
+    </form>    
+    </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>{{unit_habit_logs}} per day</th>
-            <th>{{unit_habit_logs}} cumulative</th>
-            <th>{{unit_habit_logs}} expected</th>            
-          </tr>
-        </thead>
-        <tbody>
-        {% for log in habit_logs %}
-            <tr>
-              <td>{{ log.date | date:"d-M-Y D" }}</td>
-              <td>{{ log.total_quantity }}</td>
-              <td>{{ log.habit_logs_quantity_cumsum }}</td>
-              <td>{{ log.target_expected_quantity_cumsum | floatformat:0 }}  </td>              
-            </tr>
-        {% endfor %}
-        </tbody>
-      </table>
+    {% if target %}      
+    <div class="row">
+    {% for key, value in stats.items %}
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"> {{ value.title }} </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800"> {{ value.value }} </div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+          Habit Logs for target <i><strong>"{{ target.title }}" </strong> </i> from {{ target.start_date | date:"d-M-Y" }} to {{ target.end_date | date:"d-M-Y" }}
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>{{unit_habit_logs}} per day</th>
+                      <th>{{unit_habit_logs}} cumulative</th>
+                      <th>{{unit_habit_logs}} expected</th>            
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for log in habit_logs %}
+                      <tr>
+                        <td>{{ log.date | date:"d-M-Y D" }}</td>
+                        <td>{{ log.total_quantity }}</td>
+                        <td>{{ log.habit_logs_quantity_cumsum }}</td>
+                        <td>{{ log.target_expected_quantity_cumsum | floatformat:0 }}  </td>              
+                      </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     {% else %}
       <p>No records selected or available.</p>
     {% endif %}
-  </div>
 {% endblock %}

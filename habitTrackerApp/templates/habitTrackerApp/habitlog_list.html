@@ -1,34 +1,42 @@
 {% extends "habitTrackerApp/base.html" %}
+{% load static %}
 
 {% block content %}
-    <h1>Targets</h1>
-    <a href="{% url 'habit_log_create' %}">Create New Habit Log</a>
-
-    <table >
-        <thead>
-            <tr>
-                <th>Habit</th>
-                <th>Date</th>
-                <th>Quantity</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for habit_log in object_list %}
-                <tr>
-                    <td>{{ habit_log.habit.name}}</td>
-                    <td>{{ habit_log.date | date:"Y-m-d" }}</td>
-                    <td>{{ habit_log.quantity }}</td>
-                    <td>
-                        <a href="{% url 'habit_log_update' habit_log.pk %}">Edit</a> |
-                    </td>
-                </tr>
-            {% empty %}
-                <tr>
-                    <td colspan="6">No record available.</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<h1 class="h3 mb-2 text-gray-800">Habits</h1>
     
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <a href="{% url 'habit_log_create' %}" class="btn btn-primary">Create New Habit Log</a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Habit</th>
+                        <th>Date</th>
+                        <th>Quantity</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for habit_log in object_list %}
+                        <tr>
+                            <td>{{ habit_log.habit.name}}</td>
+                            <td>{{ habit_log.date | date:"Y-m-d" }}</td>
+                            <td>{{ habit_log.quantity }}</td>
+                            <td>
+                                <a href="{% url 'habit_log_update' habit_log.pk %}" class="btn btn-primary">Edit</a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="6">No record available.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>           
+            </table>
+        </div>
+    </div>
+</div>
 {% endblock %}

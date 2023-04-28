@@ -69,6 +69,8 @@ class HomePageView(LoginRequiredMixin, generic.TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         target_form = TargetSelectionForm(user=self.request.user)
+        context['target_choices'] = target_form.fields['target'].choices
+        
         context['target_form'] = target_form
 
         target_id = self.request.GET.get('target')
@@ -85,7 +87,8 @@ class HomePageView(LoginRequiredMixin, generic.TemplateView):
             ).values('date').annotate(total_quantity=Sum('quantity')).order_by('date')
 
             days_count_from_start_to_end = (target.end_date - target.start_date).days + 1
-            days_count_from_today_to_end = (target.end_date.date() - timezone.localdate()).days + 1            
+            days_count_from_today_to_end = (target.end_date.date() - timezone.localdate()).days + 1
+
             cumsum = 0
             target_expected_quantity = target.quantity / days_count_from_start_to_end
             habit_logs_quantity_cumsum = 0
@@ -109,12 +112,17 @@ class HomePageView(LoginRequiredMixin, generic.TemplateView):
 
             sum_habit_logs = sum(log['total_quantity'] for log in filled_habit_logs) or 0 
 
-            context['habit_logs'] = filled_habit_logs
-            context['target_quantity'] = target.quantity
-            context['current_rate'] = round(sum_habit_logs / days_count_from_start_to_end, 2)
-            context['required_rate'] = round((target.quantity - sum_habit_logs) / days_count_from_today_to_end, 2)
-            context['target_achieved_percent'] = int(round(sum_habit_logs / target.quantity * 100, 2))
+            stats = {
+                # 'target_start_date': {"title": "Target Start Date", "value": target.start_date.strftime('%d-%b-%Y')},
+                # 'target_end_date': {"title": "Target End Date", "value": target.end_date.strftime('%d-%b-%Y')}, 
+                'target_quantity': {"title": "Target Quantity", "value": target.quantity},
+                'current_rate': {"title": "Current Rate", "value": round(sum_habit_logs / days_count_from_start_to_end, 2)}, 
+                'required_rate': {"title": "Required Rate", "value": round((target.quantity - sum_habit_logs) / days_count_from_today_to_end, 2) if days_count_from_today_to_end > 0 else 0},
+                'target_achieved_percent': {"title": "Target Achieved Percent", "value": int(round(sum_habit_logs / target.quantity * 100, 2))},
+            }
             
+            context['stats'] = stats
+            context['habit_logs'] = filled_habit_logs
             context['unit_habit_logs'] = target.habit.unit
 
         return context

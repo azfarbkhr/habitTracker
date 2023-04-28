@@ -1,10 +1,13 @@
 {% extends "habitTrackerApp/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-    <h1>{% if form.instance.pk %}Edit Habit{% else %}Create Habit{% endif %}</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Save</button>
-    </form>
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h1 class="h3 mb-2 text-gray-800">{% if form.instance.pk %}Edit Habit{% else %}Create Habit{% endif %}</h1>
+    </div>
+    <div class="card-body">
+        {% crispy form %}
+    </div>
+</div>
 {% endblock %}

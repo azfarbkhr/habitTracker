@@ -1,130 +1,199 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Syed Azfar Ali">
+
     <title>Habit Tracker</title>
+
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet">
+
 </head>
-<body>
-    {% if user.is_authenticated %}
-        <ul>
 
-            <li>
-                <a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">
-                    Habit Tracker
-                </a>
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion toggled" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'home' %}">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Habit-Tracker</div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+        {% if user.is_authenticated %}
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'home' %}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Dashboard</span></a>
             </li>
-            <li>
-                <a href="{% url 'habit_list' %}" class="{% if request.resolver_match.url_name == 'habit_list' or request.resolver_match.url_name == 'habit_create' or request.resolver_match.url_name == 'habit_update' %}active{% endif %}">
-                    Habits
-                </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+            
+            <!-- Nav Items -->
+            <li class="nav-item {% if request.resolver_match.url_name == 'habit_list' or request.resolver_match.url_name == 'habit_create' or request.resolver_match.url_name == 'habit_update' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'habit_list' %}">
+                    <i class="fas fa-fw fa-ruler"></i>
+                    <span>Habits</span></a>
             </li>
-            <li>
-                <a href="{% url 'target_list' %}" class="{% if request.resolver_match.url_name == 'target_list' or request.resolver_match.url_name == 'target_create' or request.resolver_match.url_name == 'target_update' %}active{% endif %}">
-                    Targets
-                </a>
+            <li class="nav-item {% if request.resolver_match.url_name == 'target_list' or request.resolver_match.url_name == 'target_create' or request.resolver_match.url_name == 'target_update' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'target_list' %}">
+                    <i class="fas fa-fw fa-bullseye"></i>
+                    <span>Targets</span></a>
             </li>
-            <li>
-                <a href="{% url 'habit_log_list' %}" class="{% if request.resolver_match.url_name == 'habit_log_list' or request.resolver_match.url_name == 'habit_log_create' or request.resolver_match.url_name == 'habit_log_update' %}active{% endif %}">
-                    Habit Log
-                </a>
+            <li class="nav-item {% if request.resolver_match.url_name == 'habit_log_list' or request.resolver_match.url_name == 'habit_log_create' or request.resolver_match.url_name == 'habit_log_update' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'habit_log_list' %}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Habit Log</span></a>
             </li>
-            <li style="float:right">
-                <a href="{% url 'logout' %}">
-                    Logout
-                </a>
+
+            <!-- Divider -->
+        {% else %}
+            <li class="nav-item {% if request.resolver_match.url_name == 'login' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'login' %}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Login</span></a>
             </li>
-            <li style="float:right">
-                <a href="#">
-                    {{ user.username }}
-                </a>
+            <li class="nav-item {% if request.resolver_match.url_name == 'signup' %}active{% endif %}">
+                <a class="nav-link" href="{% url 'signup' %}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Sign up</span></a>
             </li>
+
+        {% endif %}
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
         </ul>
+        <!-- End of Sidebar -->
 
-    {% else %}
-        <ul>
-            <li>
-                <a href="{% url 'login' %}" class="{% if request.resolver_match.url_name == 'login' %}active{% endif %}">Login</a>   
-            </li>
-            <li>
-                <a href="{% url 'signup' %}" class="{% if request.resolver_match.url_name == 'signup' %}active{% endif %}">Sign up</a>
-            </li>
-        </ul> 
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
 
-    {% endif %}
+            <!-- Main Content -->
+            <div id="content">
 
-    {% for message in messages %}
-    <div class="message {{ message.tags }}">
-        {{ message }}
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    
+                    <!-- Topbar Search -->
+                    <form
+                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                        <div class="input-group">
+                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
+                                aria-label="Search" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-search fa-sm"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+                        {% if user.is_authenticated %}
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"> {{ user.username }} </span>
+                                <img class="img-profile rounded-circle" src="{% static '/img/undraw_profile.svg' %}">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{% url 'logout' %}">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>    
+                        {% endif %}
+                    </ul>
+                </nav>
+                <!-- End of Topbar -->
+                
+
+                
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}" role="alert">
+                        {{ message }}
+                    </div>
+                    {% endfor %}                    
+                    {% block content %}
+                    {% endblock %}
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Habit Tracker App 2023</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
     </div>
-    {% endfor %}
+    <!-- End of Page Wrapper -->
 
-    {% block content %}
-    {% endblock %}
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
-    <style>
-        .message {
-            border: 1px solid;
-            padding: 10px;
-            margin: 10px 0;
-        }
-        .message.success {
-            border-color: #4caf50;
-            background-color: #dff0d8;
-            color: #3c763d;
-        }
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static '/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static '/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
-        table {
-        border-collapse: collapse;
-        width: 100%;
-        }
+    <!-- Core plugin JavaScript-->
+    <script src="{% static '/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
 
-        table td, table th {
-        border: 1px solid #ddd;
-        padding: 8px;
-        }
+    <!-- Custom scripts for all pages-->
+    <script src="{% static '/js/sb-admin-2.min.js' %}"></script>
 
-        table tr:nth-child(even){background-color: #f2f2f2;}
+    <!-- Page level plugins -->    
+    <link href="{% static 'vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+    
 
-        table tr:hover {background-color: #ddd;}
-
-        table th {
-        padding-top: 12px;
-        padding-bottom: 12px;
-        text-align: left;
-        background-color: #04AA6D;
-        color: white;
-        }
-
-        ul {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        border: 1px solid #e7e7e7;
-        background-color: #f3f3f3;
-        }
-
-        li {
-        float: left;
-        }
-
-        li a {
-        display: block;
-        color: #666;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        }
-
-        li a:hover:not(.active) {
-        background-color: #ddd;
-        }
-
-        li a.active {
-        color: white;
-        background-color: #04AA6D;
-        }        
-        
-    </style>
 </body>
+
 </html>
